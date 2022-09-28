@@ -442,6 +442,30 @@ unsigned int nf_nat_manip_pkt(struct sk_buff *skb, struct nf_conn *ct,
 	return NF_DROP;
 }
 
+unsigned int nf_nat_reverse_manip_pkt(struct sk_buff *skb, struct nf_conn *ct,
+			      enum nf_nat_manip_type mtype,
+			      enum ip_conntrack_dir dir)
+{
+	struct nf_conntrack_tuple target;
+	memcpy(&target, &ct->tuplehash[dir].tuple, sizeof(target));
+
+	switch (target.src.l3num) {
+	case NFPROTO_IPV6:
+		if (nf_nat_ipv6_manip_pkt(skb, 0, &target, mtype))
+			return NF_ACCEPT;
+		break;
+	case NFPROTO_IPV4:
+		if (nf_nat_ipv4_manip_pkt(skb, 0, &target, mtype))
+			return NF_ACCEPT;
+		break;
+	default:
+		WARN_ON_ONCE(1);
+		break;
+	}
+
+	return NF_DROP;
+}
+
 static void nf_nat_ipv4_csum_update(struct sk_buff *skb,
 				    unsigned int iphdroff, __sum16 *check,
 				    const struct nf_conntrack_tuple *t,

@@ -79,6 +79,9 @@ unsigned int nf_nat_packet(struct nf_conn *ct, enum ip_conntrack_info ctinfo,
 unsigned int nf_nat_manip_pkt(struct sk_buff *skb, struct nf_conn *ct,
 			      enum nf_nat_manip_type mtype,
 			      enum ip_conntrack_dir dir);
+unsigned int nf_nat_reverse_manip_pkt(struct sk_buff *skb, struct nf_conn *ct,
+			      enum nf_nat_manip_type mtype,
+			      enum ip_conntrack_dir dir);
 void nf_nat_csum_recalc(struct sk_buff *skb,
 			u8 nfproto, u8 proto, void *data, __sum16 *check,
 			int datalen, int oldlen);

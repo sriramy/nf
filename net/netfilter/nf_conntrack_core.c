@@ -1134,6 +1134,14 @@ nf_ct_resolve_clash(struct sk_buff *skb, struct nf_conntrack_tuple_hash *h,
 	net = nf_ct_net(loser_ct);
 
 	l4proto = nf_ct_l4proto_find(nf_ct_protonum(ct));
+	if (l4proto->on_clash) {
+		ret = l4proto->on_clash(skb, ct, loser_ct, ctinfo);
+		if (ret == NF_ACCEPT)
+			return ret;
+		else
+			goto drop;
+	}
+
 	if (!l4proto->allow_clash)
 		goto drop;
 

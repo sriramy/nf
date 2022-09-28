@@ -12,6 +12,7 @@
 #endif
 #ifdef CONFIG_NF_CT_PROTO_SCTP
 #include <linux/netfilter/nf_conntrack_sctp.h>
+#include <linux/timer.h>
 #endif
 #include <linux/seqlock.h>
 
@@ -60,6 +61,8 @@ struct nf_dccp_net {
 #ifdef CONFIG_NF_CT_PROTO_SCTP
 struct nf_sctp_net {
 	unsigned int timeouts[SCTP_CONNTRACK_MAX];
+	struct timer_list delayed_init;
+	unsigned int discard_init;
 };
 #endif
 

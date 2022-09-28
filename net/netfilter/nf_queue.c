@@ -229,7 +229,6 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
 		nf_queue_entry_free(entry);
 		return status;
 	}
-
 	return 0;
 }
 

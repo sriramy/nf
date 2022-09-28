@@ -422,10 +422,14 @@ static void nf_nat_l4proto_unique_tuple(struct nf_conntrack_tuple *tuple,
 		}
 		goto find_free_id;
 #endif
+	case IPPROTO_SCTP:
+#ifdef CONFIG_NF_CT_PROTO_SCTP_LITE
+		/* do not change the tuples for SCTP if using lite */
+		return;
+#endif
 	case IPPROTO_UDP:
 	case IPPROTO_UDPLITE:
 	case IPPROTO_TCP:
-	case IPPROTO_SCTP:
 	case IPPROTO_DCCP:
 		if (maniptype == NF_NAT_MANIP_SRC)
 			keyptr = &tuple->src.u.all;

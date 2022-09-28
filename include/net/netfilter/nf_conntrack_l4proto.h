@@ -24,6 +24,10 @@ struct nf_conntrack_l4proto {
 	/* Resolve clashes on insertion races. */
 	bool allow_clash;
 
+	/* handle clash if any */
+	int (*on_clash)(struct sk_buff *skb, const struct nf_conn *ct,
+			struct nf_conn *loser_ct, enum ip_conntrack_info ctinfo);
+
 	/* protoinfo nlattr size, closes a hole */
 	u16 nlattr_size;
 
@@ -141,6 +145,8 @@ void nf_conntrack_dccp_init_net(struct net *net);
 void nf_conntrack_sctp_init_net(struct net *net);
 void nf_conntrack_icmp_init_net(struct net *net);
 void nf_conntrack_icmpv6_init_net(struct net *net);
+
+void nf_conntrack_sctp_fini_net(struct net *net);
 
 /* Existing built-in generic protocol */
 extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_generic;

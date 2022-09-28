@@ -106,9 +106,11 @@ instance_lookup(struct nfnl_queue_net *q, u_int16_t queue_num)
 
 	head = &q->instance_table[instance_hashfn(queue_num)];
 	hlist_for_each_entry_rcu(inst, head, hlist) {
-		if (inst->queue_num == queue_num)
+		if (inst->queue_num == queue_num) {
 			return inst;
+		}
 	}
+
 	return NULL;
 }
 

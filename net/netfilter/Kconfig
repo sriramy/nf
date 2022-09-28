@@ -202,9 +202,13 @@ config NF_CT_PROTO_DCCP
 config NF_CT_PROTO_GRE
 	bool
 
-config NF_CT_PROTO_SCTP
-	bool 'SCTP protocol connection tracking support'
-	depends on NETFILTER_ADVANCED
+menuconfig NF_CT_PROTO_SCTP
+	bool "SCTP connection tracking support"
+
+if NF_CT_PROTO_SCTP
+
+config NF_CT_PROTO_SCTP_LEGACY
+	bool 'Legacy SCTP conntrack helper'
 	default y
 	select LIBCRC32C
 	help
@@ -212,6 +216,23 @@ config NF_CT_PROTO_SCTP
 	  tracking code will be able to do state tracking on SCTP connections.
 
 	  If unsure, say Y.
+
+config NF_CT_PROTO_SCTP_LITE
+	bool 'SCTP conntrack helper LITE'
+	default n
+	select LIBCRC32C
+	help
+	  With this option enabled, the layer 3 independent connection
+	  tracking code will be able to do state tracking on SCTP connections.
+
+	  In contrast to the original SCTP conntrack helper module, this
+	  implementation is light, only inspects INIT chunks and based on
+	  timer for the rest of the state handling
+	  https://datatracker.ietf.org/doc/draft-porfiri-tsvwg-sctp-natsupp/
+
+	  If unsure, say N.
+
+endif # NF_CT_PROTO_SCTP
 
 config NF_CT_PROTO_UDPLITE
 	bool 'UDP-Lite protocol connection tracking support'

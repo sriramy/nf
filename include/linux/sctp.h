@@ -122,7 +122,10 @@ enum { SCTP_CID_ACTION_MASK = 0xc0, };
  *    The T bit is set to 0 if the sender had a TCB that it destroyed.
  *    If the sender did not have a TCB it should set this bit to 1.
  */
-enum { SCTP_CHUNK_FLAG_T = 0x01 };
+enum {
+	SCTP_CHUNK_FLAG_T = 0x01,
+	SCTP_CHUNK_FLAG_M = 0x08,
+};
 
 /*
  *  Set the T bit
@@ -197,6 +200,8 @@ enum sctp_param {
 	SCTP_PARAM_RESET_RESPONSE		= cpu_to_be16(0x0010),
 	SCTP_PARAM_RESET_ADD_OUT_STREAMS	= cpu_to_be16(0x0011),
 	SCTP_PARAM_RESET_ADD_IN_STREAMS		= cpu_to_be16(0x0012),
+
+	SCTP_PARAM_RJ = cpu_to_be16(0xc400),
 }; /* enum */
 
 
